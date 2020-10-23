@@ -1,14 +1,14 @@
 package addressBook;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.ArrayList;
 import java.io.IOException;
-import java.nio.*;;
 
 public class AddressBookJava {
 	ArrayList<String> persons = new ArrayList<>();
@@ -18,75 +18,72 @@ public class AddressBookJava {
 	String mob = "^[91]{2}[ ]?[0-9]{10}$";
 	String mail = "^[a-zA-Z0-9]+([.+-_][a-z-A-Z0-9]+)*@[a-zA-Z0-9]+.[a-z]{2,3}([.][a-z]{2})*$";
 	String zipcode = "^[0-9]{3}[ ]?[0-9]{3}$";
+	Scanner sc = new Scanner(System.in);
 
 	public void userInput() {
-		Scanner s = new Scanner(System.in);
 		System.out.println("Enter the First Name : ");
-		fname = s.next();
+		fname = sc.next();
 		Pattern pattern = Pattern.compile(name);
 		Matcher matcher = pattern.matcher(fname);
 		if (matcher.find()) {
 			System.out.println("Valid Name");
 		} else {
 			System.out.println("Please enter the name in valid Format, First letter should be Capital");
-			fname = s.next();
+			fname = sc.next();
 		}
 		System.out.println("Enter the Last Name : ");
-		lname = s.next();
+		lname = sc.next();
 		Pattern pattern1 = Pattern.compile(name);
 		Matcher matcher1 = pattern1.matcher(lname);
 		if (matcher1.find()) {
 			System.out.println("Valid Name");
 		} else {
 			System.out.println("Please enter the name in valid Format, First letter should be Capital");
-			lname = s.next();
+			lname = sc.next();
 		}
-
 		System.out.println("Enter the Mobile Number : ");
-		mnum = s.nextInt();
+		mnum = sc.nextInt();
 		Pattern pattern2 = Pattern.compile(name);
 		Matcher matcher2 = pattern2.matcher(mnum);
 		if (matcher2.find()) {
 			System.out.println("Valid Mobile Number");
 		} else {
 			System.out.println("Please enter the valid mobile number");
-			mnum = s.nextInt();
+			mnum = sc.nextInt();
 		}
-
 		System.out.println("Enter the City  : ");
-		city = s.next();
+		city = sc.next();
 		Pattern pattern3 = Pattern.compile(name);
 		Matcher matcher3 = pattern3.matcher(city);
 		if (matcher3.find()) {
 			System.out.println("Valid City Name");
 		} else {
 			System.out.println("Please enter the city name in proper format");
-			city = s.next();
+			city = sc.next();
 		}
 		System.out.println("Enter the State : ");
-		state = s.next();
+		state = sc.next();
 		Pattern pattern4 = Pattern.compile(name);
 		Matcher matcher4 = pattern4.matcher(state);
 		if (matcher4.find()) {
 			System.out.println("Valid State Name");
 		} else {
 			System.out.println("Please enter the state name in proper format");
-			state = s.next();
+			state = sc.next();
 		}
-
 		System.out.println("Enter the Zip : ");
-		zip = s.nextInt();
+		zip = sc.nextInt();
 		Pattern pattern5 = Pattern.compile(name);
 		Matcher matcher5 = pattern5.matcher(zip);
 		if (matcher5.find()) {
 			System.out.println("Valid Zip code");
 		} else {
 			System.out.println("Invalid zip code");
-			zip = s.nextInt();
+			zip = sc.nextInt();
 		}
-
 	}
 
+	// Add user details
 	public void insertUser() throws IOException {
 		userInput();
 		String p = new String(fname);
@@ -101,17 +98,120 @@ public class AddressBookJava {
 		File f1 = new File("G:/addressbook.txt");
 		f1.createNewFile();
 		FileWriter fw = new FileWriter("G:/addressbook.txt");
-		fw.write("\nFirst Name : " + fname + "\nLast Name : " + lname + "\nCity : " + city + "\nState : " + state);
-		fw.close();
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write("\nFirst Name : " + fname + "\nLast Name : " + lname + "\nCity : " + city + "\nState : " + state);
+		bw.close();
+	}
+
+	// Display the addressbook
+	public void displayAddressBook() throws IOException {
+		FileReader fr = new FileReader("G:/addressbook.txt");
+		BufferedReader br = new BufferedReader(fr);
+		int ch = br.read();
+		System.out.println("Record : " + (char) ch);
+		br.close();
+	}
+
+	// Edit user details
+	public void modify() {
+		System.out.println("Enter the first name to wants modify : ");
+		String fname = sc.next();
+		for (int i = 0; i < persons.size(); i++) {
+			String p = (String) persons.get(i);
+			if (fname.equals(p)) {
+				System.out.println("1.First Name\n2.Last Name\n3.City\n4.State\n5.Exit");
+				int choice = sc.nextInt();
+				switch (choice) {
+				case 1:
+					System.out.println("Enter the First Name : ");
+					fname = sc.next();
+					Pattern pattern = Pattern.compile(name);
+					Matcher matcher = pattern.matcher(fname);
+					if (matcher.find()) {
+						System.out.println("Valid Name");
+						String name = new String(fname);
+						persons.add(name);
+					} else {
+						System.out.println("Please enter the name in valid Format, First letter should be Capital");
+						fname = sc.next();
+					}
+					break;
+				case 2:
+					System.out.println("Enter the Last Name : ");
+					lname = sc.next();
+					Pattern pattern1 = Pattern.compile(name);
+					Matcher matcher1 = pattern1.matcher(lname);
+					if (matcher1.find()) {
+						System.out.println("Valid Name");
+						String name = new String(lname);
+						persons.add(name);
+					} else {
+						System.out.println("Please enter the name in valid Format, First letter should be Capital");
+						fname = sc.next();
+					}
+					break;
+				case 3:
+					System.out.println("Enter the City  : ");
+					city = sc.next();
+					Pattern pattern3 = Pattern.compile(name);
+					Matcher matcher3 = pattern3.matcher(city);
+					if (matcher3.find()) {
+						System.out.println("Valid City Name");
+						String name = new String(city);
+						persons.add(name);
+					} else {
+						System.out.println("Please enter the city name in proper format");
+						city = sc.next();
+					}
+					break;
+				case 4:
+					System.out.println("Enter the State : ");
+					state = sc.next();
+					Pattern pattern4 = Pattern.compile(name);
+					Matcher matcher4 = pattern4.matcher(state);
+					if (matcher4.find()) {
+						System.out.println("Valid State Name");
+						String name = new String(state);
+						persons.add(name);
+					} else {
+						System.out.println("Please enter the state name in proper format");
+						state = sc.next();
+					}
+					break;
+				default:
+					System.out.println("Invalid Choice");
+					break;
+				}
+				System.out.println(persons);
+			} else {
+				System.out.println("Name not Exist!!!");
+			}
+		}
+	}
+
+	// Delete user record
+	public void deleteRecord() {
+		System.out.println("Enter the firstname to wants to delete : ");
+		String fname = sc.next();
+		for (int i = 0; i < persons.size(); i++) {
+			String p = (String) persons.get(i);
+			if (fname.equals(p)) {
+				persons.remove(i);
+				System.out.println("Record Deleted");
+			} else {
+				System.out.println("Name not exist!!!");
+			}
+		}
 	}
 
 	public static void main(String[] args) throws IOException {
 		AddressBookJava add = new AddressBookJava();
 		while (true) {
-			Scanner s = new Scanner(System.in);
+			Scanner sc = new Scanner(System.in);
+			System.out.println("**********MENU**********");
 			System.out.println(
 					"1.Add User Information\n2.Display AddressBook\n3.Modify Details\n4.Delete user Record\n5.Search Record\n6.Exit");
-			int choice = s.nextInt();
+			int choice = sc.nextInt();
 
 			switch (choice) {
 			case 1:
@@ -128,6 +228,7 @@ public class AddressBookJava {
 				break;
 			case 5:
 				add.searchRecord();
+				break;
 			case 6:
 				System.exit(0);
 			default:
@@ -135,5 +236,6 @@ public class AddressBookJava {
 				break;
 			}
 		}
+
 	}
 }
