@@ -9,78 +9,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import com.bridgelabz.addressbook.Contact;
 import com.bridgelabz.addressbook.utils.Constants;
 import java.io.*;
-
-class Contact {
-	private String firstName, lastName, city, state, mobileNumber, zip;
-
-	public Contact() {
-	}
-	public Contact(String firstName, String lastName, String city, String state, String mobileNumber, String zip) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.city = city;
-		this.state = state;
-		this.mobileNumber = mobileNumber;
-		this.zip = zip;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getMobileNumber() {
-		return mobileNumber;
-	}
-
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
-	}
-
-	public String getZip() {
-		return zip;
-	}
-
-	public void setZip(String zip) {
-		this.zip = zip;
-	}
-
-	@Override
-	public String toString() {
-		return "[\nFirst Name : " + firstName + "\nLast Name : " + lastName + "\nCity : " + city + "\nState : " + state
-				+ "\nMobule Number : " + mobileNumber + "\nZip Code : " + zip + "]";
-	}
-
-}
 
 public class AddressBookJava {
 	// Instance Variable
@@ -159,23 +90,6 @@ public class AddressBookJava {
 
 		System.out.println(persons);
 
-//		try (FileWriter fileWriter = new FileWriter(Constants.PATH)) {
-//			System.out.println("1");
-//			fileWriter.write(persons.toString());
-//			fileWriter.close();
-//		} finally {
-//			persons = null;
-//		}
-//
-//		try (FileReader fileReader = new FileReader(Constants.PATH)) {
-//			System.out.println("1");
-//			int ch = fileReader.read();
-//			while (ch != -1) {
-//				System.out.print((char) ch);
-//				fileReader.close();
-//			}
-//		}
-
 		File file = new File(Constants.PATH);
 		file.createNewFile();
 		FileWriter fw = new FileWriter(Constants.PATH);
@@ -250,15 +164,20 @@ public class AddressBookJava {
 					}
 					break;
 				case 5:
-					System.exit(0);
 					break;
 				default:
 					System.out.println("Invalid Choice");
 					break;
 				}
+				FileWriter fw;
+				try {
+					fw = new FileWriter(Constants.PATH);
+					fw.write(persons.toString());
+					fw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				System.out.println(persons);
-			} else {
-				System.out.println("Name Not Exist");
 			}
 		}
 	}
@@ -272,8 +191,6 @@ public class AddressBookJava {
 			if (fname.equals(p)) {
 				persons.remove(i);
 				System.out.println("Record Deleted");
-			} else {
-				System.out.println("Name Not Exist");
 			}
 		}
 	}
@@ -286,13 +203,9 @@ public class AddressBookJava {
 			String p = (String) persons.get(i);
 			if (fname.equals(p)) {
 				System.out.println("Record Found : " + p);
-			} else {
-				System.out.println("Name not exist!!!");
 			}
 		}
 	}
-
-	
 
 	public static void main(String arges[]) {
 		AddressBookJava add = new AddressBookJava();
