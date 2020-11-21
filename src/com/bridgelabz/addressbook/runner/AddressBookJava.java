@@ -1,11 +1,6 @@
 package com.bridgelabz.addressbook.runner;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -15,7 +10,7 @@ import java.io.*;
 
 public class AddressBookJava {
 	// Instance Variable
-	private List<String> persons;
+	private ArrayList<String> persons;
 	private Contact user = new Contact();
 
 	private static final Scanner SC = new Scanner(System.in);
@@ -96,6 +91,7 @@ public class AddressBookJava {
 		BufferedWriter bw = new BufferedWriter(fw);
 		bw.write(persons.toString());
 		bw.close();
+
 	}
 
 	// Display the address book
@@ -177,7 +173,8 @@ public class AddressBookJava {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				System.out.println(persons);
+				System.out.println("Record Updated Successfully...");
+				System.out.println("New Record : " + persons);
 			}
 		}
 	}
@@ -186,12 +183,16 @@ public class AddressBookJava {
 	public void deleteRecord() {
 		System.out.println("Enter the firstname to wants to delete : ");
 		String fname = SC.next();
-		for (int i = 0; i < persons.size(); i++) {
-			String p = (String) persons.get(i);
-			if (fname.equals(p)) {
-				persons.remove(i);
-				System.out.println("Record Deleted");
-			}
+		/*
+		 * for (int i = 0; i < persons.size(); i++) { String p = (String)
+		 * persons.get(i); if (fname.equals(p)) { persons.remove(i);
+		 * System.out.println("Record Deleted"); } }
+		 */
+		File file = new File(Constants.PATH + fname);
+		if (file.delete()) {
+			System.out.println(fname + " is deleted!");
+		} else {
+			System.out.println("Delete operation is failed.");
 		}
 	}
 
@@ -199,11 +200,16 @@ public class AddressBookJava {
 	public void searchRecord() {
 		System.out.println("Enter the name that u want to search : ");
 		String fname = SC.next();
-		for (int i = 0; i < persons.size(); i++) {
-			String p = (String) persons.get(i);
-			if (fname.equals(p)) {
-				System.out.println("Record Found : " + p);
+		BufferedReader br = null;
+
+		try {
+			br = new BufferedReader(new FileReader(Constants.PATH));
+			String contentLine = br.readLine();
+			while ((fname = contentLine) != null) {
+				System.out.println(contentLine);
+				contentLine = br.readLine();
 			}
+		} catch (Exception ex) {
 		}
 	}
 
